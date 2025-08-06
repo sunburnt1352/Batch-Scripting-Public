@@ -71,5 +71,8 @@ if not %tempBase%==C!_ (
     goto start
 )
 
+::ftp (insert intended recipient for folder of info's ip)
+::put %homeBase%\Info
+
 
 goto :EOF
