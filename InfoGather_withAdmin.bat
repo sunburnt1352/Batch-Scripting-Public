@@ -2,6 +2,30 @@
 title discoveryAllBases
 echo starting
 
+goto :main
+
+:copyOver
+  set exInfoTempBase= %tempBase%
+  :repeatCopy
+  set /p typeOfThing= "Do you want to go into a dir or copy it all? (dir/copy): "
+  set /p response="Type the folder/file name you want: "
+
+  if %typeOfThing%==copy(
+  robocopy %exInfoTempBase% %homeBase%\Info\directories\ExtraContent %response% /b /s
+  set exInfoTempBase= %tempBase%
+  )
+
+  if %typeOfThing%==dir(
+    cd %exInfoTempBase%\%response%
+    set exInfoTempBase= %tempBase%\%response%
+    dir
+    cd ..
+    goto :repeatCopy
+  )
+  exit /b 0
+
+:main
+
 ::first it takes the path to the starting directory as the homebase
 for /f "delims=" in ('cd') do @set homeBaseTemp=%%a
 
@@ -30,6 +54,7 @@ md %homeBase%\Info\directories
 md %homeBase%\Info\directories\Contents
 md %homeBase%\Info\directories\Attributes
 md %homeBase%\Info\Net
+md %homeBase%\Info\directories\ExtraContent
 
 
 ::these find basic info about the computer and put it into a txt file called Basics
@@ -63,6 +88,17 @@ dir > %homeBase%\Info\directories\Contents\%tempBase%.txt
 dir /ah > %homeBase%\Info\directories\Contents\%tempBase%.txt
 attrib > %homeBase%\Info\directories\Attributes\%tempBase%Attribute.txt
 
+:stillCopying
+for /F "delims=" %%x in (%homeBase%\Info\directories\Contents\%tempBase%Hidden.txt) do echo %%x
+set wantContent="n"
+set /p wantContent="Do you want the contents of one of these folders (y/n): "
+
+if %wantContent%==y (
+  call:copyOver
+  goto stillCopying
+)
+
+pause
 cd ..
 
 ::once its at the furthest back dir it will stop
