@@ -1,25 +1,49 @@
 @echo off
 title discoveryAllBases
-echo starting
+echo Author: Cam
+
+echo________________________________████____________________________________________________
+echo__________________________████████████__________________________________________________
+echo__________________________██████__██████____________________██__________________________
+echo____________________________██████████████______________████____________________________
+echo________________________________████████████____________██████__________________________
+echo____________________________________████████████████████████████________________________
+echo______________________________██████████████████████████████____________________________
+echo________________________________██__██████████████████████████__________________________
+echo______________________________________██__██████████████████████________________________
+echo________________________________██████______████████████████████________________________
+echo______________________________██████______________██______██████________________________
+echo________________________________██____________████______████████________________________
+echo____________________________________________████__██____██████__________________________
+echo______________________________________________________████████__________________________
+echo____________________________________________________████████____________________________
+echo__________________________________________________████████______________________________
+echo____________________________________________████████████________________________________
+echo______________________________________████████████______________________________________
+
 
 goto :main
 
 :copyOver
   set exInfoTempBase= %tempBase%
+  set exInfoTempBaseD= %tempBase%
   :repeatCopy
   set /p typeOfThing= "Do you want to go into a dir or copy it all? (dir/copy): "
   set /p response="Type the folder/file name you want: "
+  set exInfoTempBaseD= %exInfoTempBaseD%\%response%
 
   if %typeOfThing%==copy(
-  robocopy %exInfoTempBase% %homeBase%\Info\directories\ExtraContent %response% /b /s
-  set exInfoTempBase= %tempBase%
+    robocopy %exInfoTempBase% %homeBase%\Info\directories\ExtraContent %response% /b /s
+    set exInfoTempBase= %tempBase%
   )
 
   if %typeOfThing%==dir(
-    cd %exInfoTempBase%\%response%
-    set exInfoTempBase= %tempBase%\%response%
-    dir
-    cd ..
+    cd %exInfoTempBaseD%
+    echo %exInfoTempBaseD% - Regular Files
+    tree /f
+    echo %exInfoTempBaseD% - Hidden files
+    dir /ah
+    set %exInfoTempBase%= %exInfoTempBaseD%
     goto :repeatCopy
   )
   exit /b 0
@@ -89,7 +113,10 @@ dir /ah > %homeBase%\Info\directories\Contents\%tempBase%.txt
 attrib > %homeBase%\Info\directories\Attributes\%tempBase%Attribute.txt
 
 :stillCopying
-for /F "delims=" %%x in (%homeBase%\Info\directories\Contents\%tempBase%Hidden.txt) do echo %%x
+echo %tempBase% - Regular Files
+tree /f
+echo %tempBase% - Hidden files
+dir /ah
 set wantContent="n"
 set /p wantContent="Do you want the contents of one of these folders (y/n): "
 
