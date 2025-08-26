@@ -2,8 +2,8 @@
 title discoveryAllBases
 echo Author: Cam
 
+GOTO main
 
-goto :main
 
 :copyOver
   set exInfoTempBase= %tempBase%
@@ -31,22 +31,22 @@ goto :main
 
 :main
 
+
 ::first it takes the path to the starting directory as the homebase
-for /f "delims=" in ('cd') do @set homeBaseTemp=%%a
+for /f %%i in ('cd') do set homeBaseTemp=%%i
+
 
 ::this takes in an input when starting the file,
 set homeBase= %1
 
 ::this command tests if user has admin privilliges
-net file>nul 2>nul
-if '%errorlevel%' neq '0'(
-  ::there is an error code so the if statement runs, asking for admin privilliges
-  echo requesting admin privileges for system updates.
-  ::from here it starts the file again with the homeBase dir that was set prior
-  echo(
-      powershell.exe -Command "Start-Process '%~f0' %HomeBaseTemp% -Verb RunAs"
-      exit /B
-)
+
+net session >nul 2>&1
+    if %errorLevel% neq 0 (
+        powershell.exe -Command "Start-Process '%~f0' %HomeBaseTemp% -Verb RunAs"
+        exit /B
+    )
+pause
 
 ::it then moves into the previously set dir
 cd %homeBase%
@@ -86,7 +86,7 @@ net session > %homeBase%\Info\Net\session.txt
 ::this is a loop where it goes through each directory from the intial to the farthest back and grabs the contents
 
 :start
-for /f "delims=" %%a in ('cd') do @set tempBase=%%a
+for /f %%i in ('cd') do set tempBase=%%i
 set tempBase= %tempBase:\=_%
 set tempBase=%currDir::=!%
 dir > %homeBase%\Info\directories\Contents\%tempBase%.txt
