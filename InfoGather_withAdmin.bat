@@ -56,7 +56,7 @@ for /f "delims=" in ('cd') do @set homeBaseTemp=%%a
 ::this takes in an input when starting the file,
 set homeBase= %1
 
-this command tests if user has admin privilliges
+::this command tests if user has admin privilliges
 net file>nul 2>nul
 if '%errorlevel%' neq '0'(
   ::there is an error code so the if statement runs, asking for admin privilliges
