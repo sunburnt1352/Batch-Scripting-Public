@@ -65,8 +65,6 @@ dir /ah > %homeBase%\Info\directories\Contents\%tempBase%.txt
 attrib > %homeBase%\Info\directories\Attributes\%tempBase%Attribute.txt
 
 
-::ftp (insert intended recipient for folder of info's ip)
-::put %homeBase%\Info
 
 
 goto :EOF
