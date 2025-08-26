@@ -1,5 +1,5 @@
 @echo off
-title discoveryAllBases
+title InfoGather_withAdmin
 echo Author: Cam
 
 
