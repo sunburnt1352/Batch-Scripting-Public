@@ -1,5 +1,5 @@
 @echo off
-title InfoGather_withAdmin
+title InfoGather
 echo Author: Cam
 
 
@@ -12,12 +12,6 @@ for /f %%i in ('cd') do set homeBaseTemp=%%i
 set homeBase= %1
 
 ::this command tests if user has admin privilliges
-
-net session >nul 2>&1
-    if %errorLevel% neq 0 (
-        powershell.exe -Command "Start-Process '%~f0' %HomeBaseTemp% -Verb RunAs"
-        exit /B
-    )
 
 ::it then moves into the previously set dir
 cd %homeBase%
